@@ -1,0 +1,15 @@
+[Unit]
+Description=代理ChatGPT Browsing插件的get请求。
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/node /home/browsing_proxy/app.js
+Restart=always
+User=leftrigid
+Group=nogroup
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory=/home/browsing_proxy
+
+[Install]
+WantedBy=multi-user.target
