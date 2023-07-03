@@ -10,7 +10,15 @@ try {
     robotsTxt = fs.readFileSync('./robots.txt', 'utf8');
 
     app.get('/proxy', (req, res) => {
+        const ipArray = req.socket.remoteAddress.split('.');
+        const endIP = parseInt(ipArray[ipArray.length - 1]);
         const url = req.query.link; // 例: https://www.baidu.com
+
+        // 仅允许23.98.142.176/28网段访问。
+        if (!(ipArray.slice(0, 3).join('.') === '23.98.142' && endIP >= 176 && endIP <= 191)) {
+            res.status(403).send('403 Forbidden');
+            return;
+        }
 
         if (url.endsWith('robots.txt')) {
             res.set('Content-Type', 'text/plain');
